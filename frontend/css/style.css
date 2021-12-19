@@ -1,0 +1,39 @@
+
+  form {
+    color: #555;
+    display: flex;
+    padding: 2px;
+    border: 1px solid currentColor;
+    border-radius: 5px;
+    margin: 0 0 30px;
+  }
+  
+  input[type="text"] {
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 7px 8px;
+    font-size: 14px;
+    color: inherit;
+    border: 1px solid transparent;
+    border-radius: inherit;
+  }
+  
+  .hide{
+    visibility: hidden;
+    border: none;
+    border: 1px solid transparent;
+    color: inherit;
+    background-color: transparent;
+  }
+
+  .check:hover{
+    background-color: green;
+  }
+
+  .x:hover:hover{
+    background-color: red;
+  }
+
+
+

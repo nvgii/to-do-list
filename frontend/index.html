@@ -4,8 +4,10 @@
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="js/script_server.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="css/style.css" rel="stylesheet">
 </head>
 
@@ -18,7 +20,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <input type="text" class="form-control" placeholder="To-do"
                         aria-describedby="button-addon2" id="todo">
                     <div class="input-group-append">
@@ -32,6 +34,15 @@
         <div class="row">
             <p>To-do:</p>
             <ul class="list-group todoListe element">
+                <form>
+                    <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                    </div>
+                    <input type="text" class="form-control input" aria-label="Text input with checkbox" value="Test" onclick="showButtons()">
+                    <button class="bi bi-check-lg hide btn btn-outline-success check"></button>
+                    <button class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
+                    <button type="button" class="btn btn-outline-danger bi bi-trash top-0 end-0" onclick="deleteItem(this)"></button>
+                </form>
             </ul>
 
         </div>
@@ -40,10 +51,15 @@
             <p>Erledigt:</p>
             <ul class="list-group erledigtListe">
 
+
             </ul>
         </div>
     </div>
 
 </body>
+
+
+
+
 
 </html>

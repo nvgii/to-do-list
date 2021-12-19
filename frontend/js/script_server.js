@@ -1,26 +1,75 @@
 $(document).ready(function () {
+    todoListe = $('.todoListe');
+    var todos;
     $.ajax('http://localhost:3000/listtodolist')
         .done(data => {
-            var todoListe = $('.todoListe');
-            var todos = JSON.parse(data);
+            todos = JSON.parse(data);
             console.log(JSON.parse(data));
-            console.log(todos.todoListe[0].label);
-            for (todo of todos.todoListe){
-            todoListe.append(`<li class="list-group-item">
-            <div class="form-check">
-            <input class="form-check-input checkbox" type="checkbox" value="" id="flexCheckDefault" onclick="moveToDoneList(this)">
-            <label class="form-check-label" for="flexCheckDefault">
-            <button type="button" class="btn btn-outline-danger position-absolute top-0 end-0" onclick="deleteItem(this)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-            </svg>
-             Löschen 
-            </button>
-            ${todo.label}
-            </label>
-            </div>
-            </li>`)
+            for (todo of todos.todoListe) {
+                todoListe.append(`
+                <form>
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                </div>
+                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${todo.label}" onclick="showButtons()">
+                <button class="bi bi-check-lg hide btn btn-outline-success check"></button>
+                <button class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
+                <button type="button" class="btn btn-outline-danger bi bi-trash top-0 end-0" onclick="deleteItem(this)"></button>
+            </form>
+`);
             }
         })
 })
+
+function addItemToTodoList() {
+    var label = $('#todo').val();
+    todoListe.append(`
+
+            <form>
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                </div>
+                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${label}" onclick="showButtons()">
+                <button class="bi bi-check-lg hide btn btn-outline-success check"></button>
+                <button class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
+                <button type="button" class="btn btn-outline-danger bi bi-trash top-0 end-0" onclick="deleteItem(this)"></button>
+            </form>
+
+`);
+    $('#todo').val('');
+
+    $.ajax(`http://localhost:3000/listtodolist`, {
+        method: 'post',
+        data: {
+            label: label,
+            description: ''
+        },
+        dataType: 'JSON'
+    }).done(data => {})
+}
+
+function deleteItem(event) {
+    id = todo.id;
+    var buttonElement = $(event);
+    var listElement = buttonElement.parent().parent().parent();
+    listElement.remove();
+    $.ajax(`http://localhost:3000/listtodolist/${id}`, {
+        method: 'delete',
+        dataType: 'JSON'
+    }).done(data => {
+        window.location.reload();
+    })
+}
+
+function editTodo(event){
+    id = todo.id;
+    var buttonElement = $(event);
+    var inputField = $('.input').val();
+    console.log(inputField);
+  
+}
+
+function showButtons(){
+        console.log("clicked");
+        $('.hide').css('visibility','visible');
+}
