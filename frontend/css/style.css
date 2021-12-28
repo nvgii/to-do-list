@@ -1,5 +1,5 @@
 
-  form {
+  .form {
     color: #555;
     display: flex;
     padding: 2px;
@@ -20,7 +20,7 @@
   }
   
   .hide{
-    visibility: hidden;
+    display: none;
     border: none;
     border: 1px solid transparent;
     color: inherit;

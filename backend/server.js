@@ -1,4 +1,5 @@
 var express = require('express');
+const path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
 var fs = require("fs");
@@ -8,6 +9,20 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+
+// sendFile will go here
+app.get('/js/script_server.js', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend/js/script_server.js'));
+  });
+
+  app.get('/css/style.css', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend/css/style.css'));
+  }); 
+
+// sendFile will go here
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
 
 // vorhandene Liste anzeigen
 app.get('/listtodolist', function (request, response) {
@@ -109,10 +124,6 @@ app.post('/listtodolist', function (request, response) {
         });
     });
 })
-
-
-
-
 
 
 

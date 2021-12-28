@@ -7,33 +7,33 @@ $(document).ready(function () {
             console.log(JSON.parse(data));
             for (todo of todos.todoListe) {
                 todoListe.append(`
-                <form>
+            <div class="form">
                 <div class="input-group-text">
                     <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
                 </div>
-                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${todo.label}" onclick="showButtons()">
-                <button class="bi bi-check-lg hide btn btn-outline-success check"></button>
-                <button class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
+                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${todo.label}" onchange="showButtons(this)">
+                <button type="button" class="bi bi-check-lg hide btn btn-outline-success check"></button>
+                <button type="button"  class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
                 <button type="button" class="btn btn-outline-danger bi bi-trash top-0 end-0" onclick="deleteItem(this)"></button>
-            </form>
+            </div>
 `);
-            }
-        })
+}
+})
 })
 
 function addItemToTodoList() {
     var label = $('#todo').val();
     todoListe.append(`
 
-            <form>
+            <div class="form">
                 <div class="input-group-text">
                     <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
                 </div>
-                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${label}" onclick="showButtons()">
-                <button class="bi bi-check-lg hide btn btn-outline-success check"></button>
-                <button class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
+                <input type="text" class="form-control input" aria-label="Text input with checkbox" value="${label}" onchange="showButtons(this)">
+                <button type="button"  class="bi bi-check-lg hide btn btn-outline-success check"></button>
+                <button type="button" class="bi bi-x-lg hide x btn btn-outline-secondary"></button>
                 <button type="button" class="btn btn-outline-danger bi bi-trash top-0 end-0" onclick="deleteItem(this)"></button>
-            </form>
+            </div>
 
 `);
     $('#todo').val('');
@@ -69,7 +69,8 @@ function editTodo(event){
   
 }
 
-function showButtons(){
-        console.log("clicked");
-        $('.hide').css('visibility','visible');
+function showButtons(event){
+    var clickElement = $(event);
+    console.log( "clicked" );
+    clickElement.siblings(".hide").css("display", "block");
 }
