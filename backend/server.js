@@ -24,13 +24,19 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// vorhandene Liste anzeigen
+// vorhandene unerledigte Liste anzeigen
 app.get('/listtodolist', function (request, response) {
     fs.readFile(__dirname + "/" + "todoListe.json", 'utf8', function (err, data) {
         response.end(data);
     });
 })
 
+// vorhandene erledigte Liste anzeigen
+app.get('/listdonelist', function (request, response) {
+    fs.readFile(__dirname + "/" + "doneListe.json", 'utf8', function (err, data) {
+        response.end(data);
+    });
+})
 //Löschen
 app.delete('/listtodolist/:id', function (request, response) {
     fs.readFile(__dirname + "/" + "todoListe.json", 'utf8', function (err, data) {
@@ -44,6 +50,29 @@ app.delete('/listtodolist/:id', function (request, response) {
                 todos.splice(index, 1);
                 fs.writeFile('todoListe.json', JSON.stringify({
                     "todoListe": todos
+                }), function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+            }
+        }
+        response.end(JSON.stringify(todos));
+    });
+})
+//Löschen in doneListe
+app.delete('/listdonelist/:id', function (request, response) {
+    fs.readFile(__dirname + "/" + "doneListe.json", 'utf8', function (err, data) {
+        id = request.params.id;
+        data = JSON.parse(data);
+        todos = data.doneListe;
+
+        for (todo of todos) {
+            if (todo.id == id) {
+                index = todos.indexOf(todo);
+                todos.splice(index, 1);
+                fs.writeFile('doneListe.json', JSON.stringify({
+                    "doneListe": todos
                 }), function (err) {
                     if (err) {
                         return console.log(err);
@@ -70,6 +99,56 @@ app.get('/listtodolist/:id', function (request, response) {
         }
     });
 })
+
+//move
+app.get('/listtodolist/move/:id', function (request, response) {
+    const id = request.params.id;
+
+    fs.readFile(__dirname + "/" + "todoListe.json", 'utf8', function (err, data) {
+        
+        data = JSON.parse(data);
+        todos = data.todoListe;
+
+        for (todo of todos) {
+            //finde todo mit id
+            if (todo.id == id) {
+
+                fs.readFile(__dirname + "/" + "doneListe.json", 'utf8', function (err, data) {
+                    data = JSON.parse(data);
+                    doneTodos = data.doneListe;
+                    doneTodos.push(todo);
+                    fs.writeFile('doneListe.json', JSON.stringify({
+                        "doneListe": doneTodos
+                    }), function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+                });
+
+                
+                index = todos.indexOf(todo);
+                    todos.splice(index, 1);
+    
+                    fs.writeFile('todoListe.json', JSON.stringify({
+                        "todoListe": todos
+                    }), function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+    
+                 
+            }
+        }
+    });
+
+ 
+
+
+   
+})
+
 
 // Bearbeiten    
 app.put('/listtodolist/:id', function (request, response) {
@@ -114,13 +193,14 @@ app.post('/listtodolist', function (request, response) {
         data = JSON.parse(data);
         newId = randomId();
         incomingTodo["id"]=newId;
-        
+    
         data.todoListe.push(incomingTodo);
         data = JSON.stringify(data)
         fs.writeFile(__dirname + "/" + "todoListe.json", data, function (err) {
             if (err) return console.log(err);
             console.log('success');
-            response.end(data);
+            incomingTodo=JSON.stringify(incomingTodo)
+            response.end(incomingTodo);
         });
     });
 })
