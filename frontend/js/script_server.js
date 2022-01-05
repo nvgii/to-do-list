@@ -29,7 +29,7 @@ $(document).ready(function () {
                 doneListe.append(`
             <div class="form">
                 <div class="input-group-text">
-                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input input" onclick="moveItem(this)">
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input input" onclick="moveItemBack(this)" checked>
                 </div>
                 <input id="${todo.id}" type="text" class="form-control input" value="${todo.label}" onclick="showButtons(this)">
                 <button type="button" class="bi bi-check-lg hide btn btn-outline-success check" onclick="editTodo(this)"></button>
@@ -84,6 +84,24 @@ function moveItem(event) {
     }).done(data => {
         window.location.reload();
     })
+    window.location.reload();
+}
+
+function moveItemBack(event) {
+    console.log("moveItemBack Geklickt");
+    var checkbox = $(event);
+    console.log(checkbox);
+    var id = checkbox.parent().siblings()[0].id;
+    console.log(id);
+
+    $.ajax(`http://localhost:3000/listdonelist/move/${id}`, {
+        method: 'get',
+        dataType: 'JSON'
+    }).done(data => {
+        window.location.reload();
+    })
+    window.location.reload();
+
 }
 
 function deleteItem(event) {

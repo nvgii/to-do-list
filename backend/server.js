@@ -100,7 +100,7 @@ app.get('/listtodolist/:id', function (request, response) {
     });
 })
 
-//move
+//move von todoliste
 app.get('/listtodolist/move/:id', function (request, response) {
     const id = request.params.id;
 
@@ -148,6 +148,56 @@ app.get('/listtodolist/move/:id', function (request, response) {
 
    
 })
+
+//move von doneListe
+app.get('/listdonelist/move/:id', function (request, response) {
+    const id = request.params.id;
+
+    fs.readFile(__dirname + "/" + "doneListe.json", 'utf8', function (err, data) {
+        
+        data = JSON.parse(data);
+        doneTodos = data.doneListe;
+
+        for (todo of doneTodos) {
+            //finde todo mit id
+            if (todo.id == id) {
+
+                fs.readFile(__dirname + "/" + "todoListe.json", 'utf8', function (err, data) {
+                    data = JSON.parse(data);
+                    todos = data.todoListe;
+                    todos.push(todo);
+                    fs.writeFile('todoListe.json', JSON.stringify({
+                        "todoListe": todos
+                    }), function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+                });
+
+                
+                index = doneTodos.indexOf(todo);
+                    doneTodos.splice(index, 1);
+    
+                    fs.writeFile('doneListe.json', JSON.stringify({
+                        "doneListe": doneTodos
+                    }), function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                    });
+    
+                 
+            }
+        }
+    });
+
+ 
+
+
+   
+})
+
 
 
 // Bearbeiten    
@@ -198,7 +248,7 @@ app.post('/listtodolist', function (request, response) {
         data = JSON.stringify(data)
         fs.writeFile(__dirname + "/" + "todoListe.json", data, function (err) {
             if (err) return console.log(err);
-            console.log('success');
+            console.log(incomingTodo);
             incomingTodo=JSON.stringify(incomingTodo)
             response.end(incomingTodo);
         });
